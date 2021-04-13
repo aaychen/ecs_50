@@ -29,16 +29,12 @@ int main(int argc, char* argv[]) {
         }
 
         // add 1 to 1's complement and ignore carry out
-        if (bitString[bitString.length() - 1] == '0') { // if LSB is 0, add 1 to LSB and done
-            bitString[bitString.length() - 1] = '1';
-        } else { // deal with carrying
-            for (int i = bitString.length() - 1; i >= 0; i--) {
-                if (bitString[i] == '0') { // done with carrying if bit is 0
-                    bitString[i] = '1';
-                    break;
-                } else { // temp == '1'
-                    bitString[i] = '0';
-                }
+        for (int i = bitString.length() - 1; i >= 0; i--) {
+            if (bitString[i] == '0') { // done with carrying if bit is 0
+                bitString[i] = '1';
+                break;
+            } else { // bit is 1
+                bitString[i] = '0';
             }
         }
     }
