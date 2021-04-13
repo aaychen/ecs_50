@@ -23,7 +23,7 @@ int main() {
 
     // convert decimal form to newBase form
     std::string newVal = "";
-    while (decimal != 0) {
+    while (true) {
         int temp = decimal % newBase;
         if (0 <= temp && temp <= 9) {
             newVal.insert(0, std::to_string(temp));
@@ -31,6 +31,7 @@ int main() {
             newVal.insert(0, 1, char(temp - 10 + 'A'));
         }
         decimal /= newBase;
+        if (decimal == 0) break;
     }
 
     std::cout << "Base-" << newBase << " representation: " << newVal << std::endl;
