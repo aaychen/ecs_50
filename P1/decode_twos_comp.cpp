@@ -13,17 +13,19 @@ int main(int argc, char* argv[]) {
         return 1;
     }
 
+    // check to see if bit string is all 1s and 0s
+    for (size_t i = 0; i < bitString.length(); i++) {
+        if (bitString[i] != '1' && bitString[i] != '0') {
+            std::cerr << "Bit string does not consist solely of 1s and 0s." << std::endl;
+            return 1;
+        }
+    }
+
     // bit string treated as 2's complement representation and print corresponding base-10 integer
     if (bitString[0] == '1') { // convert to absolute value binary representation if MSB is 1
         // swap 1s and 0s
         for (size_t i = 0; i < bitString.length(); i++) {
-            char temp = bitString[i];
-            // check to see if bit string is all 1s and 0s
-            if (temp != '1' && temp != '0') {
-                std::cerr << "Bit string does not consist solely of 1s and 0s." << std::endl;
-                return 1;
-            }
-            bitString[i] = temp == '1' ? '0' : '1';
+            bitString[i] = bitString[i] == '1' ? '0' : '1';
         }
 
         // add 1 to 1's complement and ignore carry out
