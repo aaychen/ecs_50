@@ -73,4 +73,15 @@ int main()
     auto& indices2_5 = std::get<2>(result);
     for (auto index : indices2_5) std::cout << index << ' ';
     std::cout << std::endl;
+
+    std::vector<int> vals6{0, 0};
+    result = isSetPartionable(vals6);
+    assert(std::get<bool>(result));
+    std::cout << std::get<bool>(result) << '\n'; // true
+    auto& indices1_6 = std::get<1>(result);
+    for (auto index : indices1_6) std::cout << index << ' ';
+    std::cout << std::endl;
+    auto& indices2_6 = std::get<2>(result);
+    for (auto index : indices2_6) std::cout << index << ' ';
+    std::cout << std::endl;
 }

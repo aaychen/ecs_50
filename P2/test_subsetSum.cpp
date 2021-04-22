@@ -55,4 +55,20 @@ int main()
     auto& indices6 = std::get<1>(result); // [1]
     for (auto index : indices6) std::cout << index << ' ';
     std::cout << std::endl;
+
+    std::vector<int> vals7{0}; // one element
+    result = isSubsetSum(vals7, 2);
+    assert(!std::get<bool>(result));
+    std::cout << std::get<0>(result) << '\n'; // false
+    auto& indices7 = std::get<1>(result); // empty
+    for (auto index : indices7) std::cout << index << ' ';
+    std::cout << std::endl;
+
+    std::vector<int> vals8{0}; // one element
+    result = isSubsetSum(vals8, 0);
+    assert(std::get<bool>(result));
+    std::cout << std::get<0>(result) << '\n'; // true
+    auto& indices8 = std::get<1>(result); // [0]
+    for (auto index : indices8) std::cout << index << ' ';
+    std::cout << std::endl;
 }
