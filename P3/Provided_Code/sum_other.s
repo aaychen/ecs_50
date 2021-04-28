@@ -2,17 +2,14 @@
 
 .include "input_sum_other.s"
 
-# TODO: Any additional variables that you need go here.
-
-
 .text
 .globl _start
 _start:
-    # TODO: Your code goes here.
-    mov $0, %r8d # counter
+    mov $0, %r8d # index
     mov $0, %r9d # sum
-    mov $2, %r10d
-    mov $0, %r11d # index
+    mov $8, %r10d # /4 to get i, /2 to determine if even
+    mov arrlen, %r11d
+    imul $4, %r11d
     
 loop:
     mov %r8d, %eax
@@ -20,13 +17,12 @@ loop:
     idiv %r10d # quotient in EAX, remainder in EDX
     cmp $0, %edx # check remainder
     jne incrementCounter
-    add arr(%r11d), %r9d
+    add arr(%r8d), %r9d # update sum
     
 incrementCounter:
-    inc %r8d
-    add $4, %r11d
-    cmp arrlen, %r8d
-    jl loop
+    add $4, %r8d
+    cmp %r11d, %r8d
+    jl loop # check i < arrlen
     mov %r9d, sum
 
 done:
