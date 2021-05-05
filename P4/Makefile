@@ -1,4 +1,10 @@
-all: bit_add strrstr
+all: bit_add strrstr find_highest
+
+find_highest: find_highest.o
+	ld find_highest.o -o find_highest
+
+find_highest.o: find_highest.s
+	as --gstabs find_highest.s -o find_highest.o
 
 strrstr: strrstr.o
 	ld strrstr.o -o strrstr
