@@ -1,4 +1,10 @@
-all: bit_add
+all: bit_add strrstr
+
+strrstr: strrstr.o
+	ld strrstr.o -o strrstr
+
+strrstr.o: strrstr.s
+	as --gstabs strrstr.s -o strrstr.o
 
 bit_add: bit_add.o
 	ld bit_add.o -o bit_add
@@ -8,3 +14,4 @@ bit_add.o: bit_add.s
 
 clean:
 	rm -f bit_add.o bit_add
+	rm -f strrstr.o strrstr
