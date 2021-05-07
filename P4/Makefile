@@ -1,4 +1,10 @@
-all: bit_add strrstr find_highest check_bits
+all: bit_add strrstr find_highest check_bits transpose
+
+transpose: transpose.o
+	ld transpose.o -o transpose
+
+transpose.o: transpose.s call_transpose.s
+	as --gstabs call_transpose.s -o transpose.o
 
 check_bits: check_bits.o
 	ld check_bits.o -o check_bits
