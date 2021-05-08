@@ -26,7 +26,7 @@ transpose:
     mov 8(%rsp), %edx # 4th arg: address of output matrix
     mov $0, %r8d # col index
     mov $0, %r9d # row index
-    mov $0, %r11d # track insert location in output matrix
+    mov %edx, %r11d # track insert location in output matrix
 colLoop:
     cmp %ecx, %r8d # if colIndex >= numCols, done
     jge end
@@ -36,8 +36,9 @@ rowLoop:
     mov %esi, %r10d # numCols
     imul %r9d, %r10d # numCols * rowIndex
     add %r8d, %r10d # numCols * rowIndex + colIndex -> tempItem location
-    mov input(%r10d), %r12d
-    mov %r12d, output(%r11d)
+    add %eax, %r10d
+    mov (%r10d), %r12d
+    mov %r12d, (%r11d)
     add $4, %r9d # increment rowIndex
     add $4, %r11d # change insert location
     jmp rowLoop
