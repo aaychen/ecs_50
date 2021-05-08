@@ -1,4 +1,10 @@
-all: bit_add strrstr find_highest check_bits transpose
+all: bit_add strrstr find_highest check_bits transpose aaronize
+
+aaronize: aaronize.o
+	ld aaronize.o -o aaronize
+
+aaronize.o: aaronize.s call_aaronize.s
+	as --gstabs call_aaronize.s -o aaronize.o
 
 transpose: transpose.o
 	ld transpose.o -o transpose
