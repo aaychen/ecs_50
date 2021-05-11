@@ -5,70 +5,47 @@
 .text
 .globl _start
 _start: # with if/else construct
-# while index >= 0:
-#     temp = bits1[index] + bits2[index] + carry
-#     if temp == 0:
-#         res[index] = 0
-#     elif temp == 1:
-#         carry = 0
-#         res[index] = 1
-#     elif temp == 2:
-#         carry = 1
-#         res[index] = 0
-#     elif temp == 3:
-#         carry = 1
-#         res[index] = 1
-#     index -= 4
-# carryOut = carry
-    mov $bits1, %r8d
-    mov $bits2, %r9d
+# Questions:
+# Can numBits==0??
+    mov $bits1, %r8d # start address of bits1 array
+    mov $bits2, %r9d # start address of bits2 array
     mov numBits, %r10d
-    imul $4, %r10d # index, start from LSB
-    add $-4, %r10d
+    dec %r10d # index, start from LSB
     mov $0, %r11d # carry
-    mov $result, %r12d
+    mov $result, %r12d # start address of result array
 loop:
     cmp $0, %r10d
     jl setCarryOut
-    mov %r10d, %ebx
-    add %r8d, %ebx
-    mov (%ebx), %eax # move bits1 item
-    mov %r10d, %ebx
-    add %r9d, %ebx
-    add (%ebx), %eax # add bits2 item
+    mov (%r8d, %r10d, 4), %eax # get bits1 item, scale-factor addressing
+    add (%r9d, %r10d, 4), %eax # add bits2 item
     add %r11d, %eax # add carry
-cond1: # if sum == 0
+cond1: # if sum (EAX) == 0
     cmp $0, %eax
     jne cond2
-    mov %r12d, %ebx
-    add %r10d, %ebx
-    movl $0, (%ebx) # set result
-    jmp decIndex
+    # carry is 0
+    jmp setZero # set result to 0
 cond2: # elif sum == 1
     cmp $1, %eax
     jne cond3
     mov $0, %r11d # set carry
-    mov %r12d, %ebx
-    add %r10d, %ebx
-    movl $1, (%ebx)
-    jmp decIndex
+    jmp setOne # set result to 1
 cond3: # elif sum == 2
     cmp $2, %eax
     jne cond4
-    mov $1, %r11d
-    mov %r12d, %ebx
-    add %r10d, %ebx
-    movl $0, (%ebx) 
-    jmp decIndex
+    mov $1, %r11d # set carry
+    jmp setZero # set result to 0
 cond4: # elif sum == 3
     cmp $3, %eax
     jne cond4
-    mov $1, %r11d
-    mov %r12d, %ebx
-    add %r10d, %ebx
-    movl $1, (%ebx) 
+    mov $1, %r11d # set carry
+    jmp setOne # set result to 1
+setZero: # set result to 0
+    movl $0, (%r12d, %r10d, 4)
+    jmp decIndex
+setOne: # set result to 1
+    movl $1, (%r12d, %r10d, 4)
 decIndex:
-    add $-4, %r10d
+    dec %r10d # index--
     jmp loop
 setCarryOut:
     movl %r11d, carryOut
