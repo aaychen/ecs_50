@@ -5,6 +5,12 @@
 .text
 .globl _start
 _start:
+# Test Cases:
+# PASSED | numRows = 1, numCols = 3
+# PASSED | numRows > 1, numCols = 3
+# PASSED |numRows = 1, numCols > 3
+# PASSED | numRows > 1, numCols > 3
+#
 # Assume all values in array > 0 (positive)
 # Assume array contains at least 3 columns
 # Assume values within a row are unique

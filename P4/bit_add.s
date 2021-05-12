@@ -5,8 +5,13 @@
 .text
 .globl _start
 _start: # with if/else construct
-# Questions:
-# Can numBits==0??
+# Test Cases:
+# PASSED | numBits = 0
+# PASSED | numBits = 1; 0 + 0
+# PASSED | numBits = 1; 1 + 0; no overflow
+# PASSED | numBits = 1; 1 + 1; overflow
+# PASSED | numBits > 1; both bit strings all 0s
+# PASSED | numBits > 1; both bit strings all 1s
     mov $bits1, %r8d # start address of bits1 array
     mov $bits2, %r9d # start address of bits2 array
     mov numBits, %r10d

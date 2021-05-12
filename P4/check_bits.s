@@ -1,7 +1,15 @@
 .text
 
 checkBits:
-# referred to https://flint.cs.yale.edu/cs421/papers/x86-asm/asm.html for shl usage
+# Test Cases:
+# PASSED | num=1, a=0, b=31 -> 0
+# PASSED | num=1, a=31, b=0 -> 0
+# PASSED | num=7, a=0, b=2 -> 1
+# PASSED | num=7, a=0, b=1 -> 1
+# PASSED | num=-10, a=0, b=31 -> 0
+# PASSED | num=-10, a=31, b=30 -> 1
+#
+# referred to https://flint.cs.yale.edu/cs421/papers/x86-asm/asm.html for shl usage with CL register
     push %rbp
     mov %rsp, %rbp
     push %r8
@@ -33,5 +41,5 @@ regPreservation:
     pop %r8
     mov %rbp, %rsp
     pop %rbp
-end:
+checkBitsEnd:
     ret

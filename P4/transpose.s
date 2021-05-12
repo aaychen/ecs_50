@@ -1,6 +1,12 @@
 .text
 
 transpose:
+# Test Cases:
+# PASSED | numRows=1, numCols=1 (single item)
+# PASSED | numRows=1, numCols > 1
+# PASSED | numRows > 1, numCols=1
+# PASSED | numRows > 1, numCols > 1
+#
 # Traverse input array in column major order
 # Add items visited to output array which should result in transposed row major order
     push %rbp
@@ -52,5 +58,5 @@ regPreservation:
     pop %rax
     mov %rbp, %rsp
     pop %rbp
-end:
+transposeEnd:
     ret

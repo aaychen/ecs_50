@@ -5,6 +5,16 @@
 .text
 .globl _start
 _start:
+# Test Cases:
+# PASSED | both len = 1; no match
+# PASSED | both len = 1; match
+# PASSED | needle len < haystack len; no match
+# PASSED | needle len < haystack len; 1 match
+# PASSED | needle len < haystack len; multiple matches
+# PASSED | needle len == haystack len; no match
+# PASSED | needle len == haystack len; 1 match
+# PASSED | needle len > haystack len
+#
 # find length of string (assume each string's length >= 1)
 # start from end of string
 # first match from end = last match

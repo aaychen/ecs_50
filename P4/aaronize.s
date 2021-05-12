@@ -2,12 +2,10 @@
 
 aaronize:
 # Test Cases:
-# arrLen = 3, aaCount = 1
-# arrLen = 3, aaCount = 2
-# arrLen = 3, aaCount = 3
-# arrLen > 3, aaCount = 1
-# arrLen > 3, aaCount = 2
-# arrLen > 3, aaCount = 3
+# PASSED | arrLen = 3, aaCount = 1
+# PASSED | arrLen = 3, aaCount = 5
+# PASSED | arrLen > 3, aaCount = 1
+# PASSED | arrLen > 3, aaCount = 5
 #
     # Cannot modify input array
     # firstItem = firstItem + nextItem
