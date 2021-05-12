@@ -6,18 +6,16 @@ checkBits:
 # Assume 0 <= a,b <= 31
 # Place return value in RAX
     movq 24(%rsp), %r8 # 1st arg: num
-    movb 16(%rsp), %r9b # 2nd arg: first bit number, a
-    movb 8(%rsp), %r10b # 3rd arg: second bit number, b
 checkBitA:
+    movb 16(%rsp), %cl # 2nd arg: first bit number, a
     movq $1, %r11 # create mask
-    movb %r9b, %cl
     shl %cl, %r11 # left shift mask a times
     and %r8, %r11 # bitwise AND to see if bit a is set to 1
     cmp $0, %r11
     je false
 checkBitB:
+    movb 8(%rsp), %cl # 3rd arg: second bit number, b
     movq $1, %r11 # create mask
-    movb %r10b, %cl
     shl %cl, %r11 # left shift mask b times
     and %r8, %r11 # bitwise AND to see if bit b is set to 1
     cmp $0, %r11
