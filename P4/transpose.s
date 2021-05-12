@@ -1,50 +1,56 @@
 .text
 
 transpose:
-    # TODO: function instructions
-# turn columns into rows, rows into columns
-# arrays in row major order
-# does not return anything
-# cannot modify original array
-#
-# traverse input array in column major order
-# add items visited to output array which should result in transposed row major order
-# input = [[],[]] # 2D array
-# output = [[],[],[]] # 2D array
-# rowIndex = colIndex = 0
-# while colIndex < numCols:
-#     while rowIndex < numRows:
-#         # turn item(row,col) to item(col,row)
-#         temp = input[rowIndex][colIndex]
-#         output[colIndex][rowIndex] = temp
-    mov 32(%rsp), %eax # 1st arg: address of input matrix
-    mov 24(%rsp), %ebx # 2nd arg: numRows
-    imul $4, %ebx
-    mov 16(%rsp), %ecx # 3rd arg: numCols
-    mov %ecx, %esi # literal numCols in input matrix
-    imul $4, %ecx
-    mov 8(%rsp), %edx # 4th arg: address of output matrix
+# Traverse input array in column major order
+# Add items visited to output array which should result in transposed row major order
+    push %rbp
+    mov %rsp, %rbp
+    push %rax
+    push %rbx
+    push %rcx
+    push %rdx
+    push %r8
+    push %r9
+    push %r10
+    push %r11
+    push %r12
+    mov 40(%rbp), %eax # 1st arg: start address of input matrix (32+8 to account for rbp on stack)
+    mov 32(%rbp), %ebx # 2nd arg: numRows
+    mov 24(%rbp), %ecx # 3rd arg: numCols
+    mov 16(%rbp), %edx # 4th arg: start address of output matrix
     mov $0, %r8d # col index
     mov $0, %r9d # row index
-    mov %edx, %r11d # track insert location in output matrix
+    mov $0, %r10d # track insert location in output matrix
 colLoop:
     cmp %ecx, %r8d # if colIndex >= numCols, done
-    jge end
+    jge regPreservation
 rowLoop:
     cmp %ebx, %r9d # if rowIndex >= numRows, increment colIndex and reset rowIndex
     jge incColIndex
-    mov %esi, %r10d # numCols
-    imul %r9d, %r10d # numCols * rowIndex
-    add %r8d, %r10d # numCols * rowIndex + colIndex -> tempItem location
-    add %eax, %r10d
-    mov (%r10d), %r12d
-    mov %r12d, (%r11d)
-    add $4, %r9d # increment rowIndex
-    add $4, %r11d # change insert location
+    # pos of element in row-major order = (rowIndex * numCols) + colIndex
+    mov %r9d, %r11d # rowIndex
+    imul %ecx, %r11d # rowIndex * numCols
+    add %r8d, %r11d # (rowIndex * numCols) + colIndex
+    mov (%eax, %r11d, 4), %r12d # temp item
+    mov %r12d, (%edx, %r10d, 4) # move temp item to output matrix
+    inc %r9d # increment rowIndex
+    inc %r10d # change insert location
     jmp rowLoop
 incColIndex:
-    add $4, %r8d # increment colIndex
+    inc %r8d # add $4, %r8d # increment colIndex
     mov $0, %r9d # reset rowIndex
     jmp colLoop
+regPreservation:
+    pop %r12
+    pop %r11
+    pop %r10
+    pop %r9
+    pop %r8
+    pop %rdx
+    pop %rcx
+    pop %rbx
+    pop %rax
+    mov %rbp, %rsp
+    pop %rbp
 end:
     ret

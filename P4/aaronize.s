@@ -1,16 +1,26 @@
 .text
 
 aaronize:
-    # TODO: function instructions
     # Cannot modify input array
-    mov 32(%rsp), %eax # 1st arg: address of input array
-    mov 24(%rsp), %ebx # 2nd arg: input array length, assume >= 3
-    mov 16(%rsp), %ecx # 3rd arg: # of times to aaronize, assume >= 1
-    mov 8(%rsp), %edx # 4th arg: address of output array
-    
+    push %rbp
+    mov %rsp, %rbp
+    push %rax
+    push %rbx
+    push %rcx
+    push %rdx
+    push %rsi
+    push %r8
+    push %r9
+    push %r10
+    push %r11
+    push %r12
+    push %r13
+    push %r14
+    mov 40(%rbp), %eax # 1st arg: address of input array (32+8 to account for rbp on stack)
+    mov 32(%rbp), %ebx # 2nd arg: input array length, assume >= 3
+    mov 24(%rbp), %ecx # 3rd arg: # of times to aaronize, assume >= 1
+    mov 16(%rbp), %edx # 4th arg: address of output array
     mov $1, %esi # aaronize counter
-    # mov %ecx, %esi # check 1 aaronization
-
     mov $0, %r8d # index
 loop:
     cmp %ebx, %r8d # check index
@@ -64,5 +74,20 @@ checkAaronizeCounter:
     inc %esi # update aaronize counter
     cmp %ecx, %esi # check counter
     jle loop
+regPreservation:
+    pop %r14
+    pop %r13
+    pop %r12
+    pop %r11
+    pop %r10
+    pop %r9
+    pop %r8
+    pop %rsi
+    pop %rdx
+    pop %rcx
+    pop %rbx
+    pop %rax
+    mov %rbp, %rsp
+    pop %rbp
 end:
     ret
