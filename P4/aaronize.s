@@ -16,8 +16,6 @@ aaronize:
     push %r12
     push %r13
     push %r14
-    push %r15
-    push %rdi
     mov 40(%rbp), %eax # 1st arg: address of input array (32+8 to account for rbp on stack)
     mov 32(%rbp), %ebx # 2nd arg: input array length, assume >= 3
     mov 24(%rbp), %ecx # 3rd arg: # of times to aaronize, assume >= 1
@@ -80,17 +78,15 @@ checkAaronizeCounter:
     imul $8, %r11
     sub %r11, %rsp # lazy delete copied array elements by moving stack pointer
 copyArray: # copy array
-    mov %ebx, %r15d # start at end and push onto stack for easy offset calculations
-    dec %r15d # arrLen-1
+    mov %ebx, %r14d # start at end and push onto stack for easy offset calculations
+    dec %r14d # arrLen-1
 copyArrayLoop:
-    cmp $0, %r15d
+    cmp $0, %r14d
     jl loop
-    push (%eax, %r15d, 4)
-    dec %r15d
+    push (%eax, %r14d, 4)
+    dec %r14d
     jmp copyArrayLoop
 regPreservation:
-    pop %rdi
-    pop %r15
     pop %r14
     pop %r13
     pop %r12
