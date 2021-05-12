@@ -47,7 +47,7 @@ cond3:
     jle incColIndex
     mov %r14d, %r12d # sMax = temp
 incColIndex:
-    inc %r9d # add $4, %r9d # colIndex++
+    inc %r9d # colIndex++
     jmp colLoop
 setMaxesInRow:
     # position in output array = (rowIndex * 3) + colIndex{0,1,2}
@@ -58,7 +58,7 @@ setMaxesInRow:
     mov %r11d, (%edx, %r13d, 4) # output[rowIndex][1] = mMax
     inc %r13d # third max position
     mov %r12d, (%edx, %r13d, 4) # output[rowIndex][2] = sMax
-    inc %r8d # add $4, %r8d # rowIndex++
+    inc %r8d # rowIndex++
     mov $0, %r9d # colIndex = 0
     jmp rowLoop
 done:
