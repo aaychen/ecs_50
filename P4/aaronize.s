@@ -21,7 +21,6 @@ aaronize:
     mov 24(%rbp), %ecx # 3rd arg: # of times to aaronize, assume >= 1
     mov 16(%rbp), %edx # 4th arg: address of output array
     mov $1, %esi # aaronize counter
-    # mov %ecx, %esi # check 1 aaronization
     mov $0, %r8d # index
     jmp copyArray
 loop:
