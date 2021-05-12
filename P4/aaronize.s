@@ -1,14 +1,24 @@
 .text
 
 aaronize:
+# Test Cases:
+# arrLen = 3, aaCount = 1
+# arrLen = 3, aaCount = 2
+# arrLen = 3, aaCount = 3
+# arrLen > 3, aaCount = 1
+# arrLen > 3, aaCount = 2
+# arrLen > 3, aaCount = 3
+#
     # Cannot modify input array
+    # firstItem = firstItem + nextItem
+    # middleItem = prevItem + middleItem + nextItem
+    # lastItem = prevItem + lastItem
     push %rbp
     mov %rsp, %rbp
     push %rax
     push %rbx
     push %rcx
     push %rdx
-    push %rsi
     push %r8
     push %r9
     push %r10
@@ -16,11 +26,12 @@ aaronize:
     push %r12
     push %r13
     push %r14
+    push %r15
     mov 40(%rbp), %eax # 1st arg: address of input array (32+8 to account for rbp on stack)
     mov 32(%rbp), %ebx # 2nd arg: input array length, assume >= 3
     mov 24(%rbp), %ecx # 3rd arg: # of times to aaronize, assume >= 1
     mov 16(%rbp), %edx # 4th arg: address of output array
-    mov $1, %esi # aaronize counter
+    mov $1, %r15d # aaronize counter
     mov $0, %r8d # index
     jmp copyArray
 loop:
@@ -31,46 +42,35 @@ loop:
 cond1: # if index == 0 (first item)
     cmp $0, %r8d
     jne cond2
-    mov $0, %r10
-    mov %r8d, %r10d
-    inc %r10d # nextIndex
-    imul $8, %r10d # 8 bytes per item on stack
-    add %rsp, %r10
-    addl (%r10), %r9d # add next item to temp = new value
-    mov %r9d, (%edx, %r8d, 4)
+    push $1
+    call addItem
+    add $8, %rsp
     jmp incIndex
 cond2: # elif index == arrLen-1 (last item)
     mov %ebx, %r12d # arrLen
     dec %r12d # arrLen-1
     cmp %r12d, %r8d
     jne cond3
-    mov %r8d, %r10d
-    dec %r10d
-    imul $8, %r10d
-    add %rsp, %r10
-    addl (%r10), %r9d # add prev item to temp = new value
-    mov %r9d, (%edx, %r8d, 4)
+    push $-1
+    call addItem
+    add $8, %rsp
     jmp incIndex
 cond3: # else (middle items)
-    mov %r8d, %r10d
-    dec %r10d # prevIndex
-    imul $8, %r10d
-    add %rsp, %r10
-    addl (%r10), %r9d # add prev item
-    mov %r8d, %r10d
-    inc %r10d # nextIndex
-    imul $8, %r10d
-    add %rsp, %r10
-    addl (%r10), %r9d # add next item = new value
-    mov %r9d, (%edx, %r8d, 4)
+    push $-1
+    call addItem    
+    add $8, %rsp
+    push $1
+    call addItem
+    add $8, %rsp
 incIndex:
+    mov %r9d, (%edx, %r8d, 4) # store new value
     inc %r8d # update index
     jmp loop
 checkAaronizeCounter:
     mov $0, %r8d # reset index
     mov %edx, %eax # use output array items if aaronizing more than once
-    inc %esi # update aaronize counter
-    cmp %ecx, %esi # check counter
+    inc %r15d # update aaronize counter
+    cmp %ecx, %r15d # check counter
     jg regPreservation # jle copy array and aaronize again
     mov $0, %r11
     mov %ebx, %r11d
@@ -86,6 +86,7 @@ copyArrayLoop:
     dec %r14d
     jmp copyArrayLoop
 regPreservation:
+    pop %r15
     pop %r14
     pop %r13
     pop %r12
@@ -93,12 +94,21 @@ regPreservation:
     pop %r10
     pop %r9
     pop %r8
-    pop %rsi
     pop %rdx
     pop %rcx
     pop %rbx
     pop %rax
     mov %rbp, %rsp
     pop %rbp
-end:
+aaronizeEnd:
+    ret
+
+addItem:
+    mov $0, %r10
+    mov %r8d, %r10d # current index
+    add 8(%rsp), %r10d # get prev or next index; account for return address on stack
+    imul $8, %r10d # 8 bytes per item on stack
+    add %rsp, %r10
+    add $16, %r10 # account for argument and return address on stack
+    addl (%r10), %r9d # add item
     ret
