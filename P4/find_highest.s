@@ -5,16 +5,6 @@
 .text
 .globl _start
 _start:
-# Test Cases:
-# PASSED | numRows = 1, numCols = 3
-# PASSED | numRows > 1, numCols = 3
-# PASSED |numRows = 1, numCols > 3
-# PASSED | numRows > 1, numCols > 3
-#
-# Assume all values in array > 0 (positive)
-# Assume array contains at least 3 columns
-# Assume values within a row are unique
-# Result for each row should be largest to smallest
     mov numRows, %eax
     mov numCols, %ebx
     mov $arr, %ecx # start address of arr
@@ -25,7 +15,7 @@ rowLoop:
     cmp %eax, %r8d # if rowIndex >= numRows, done
     jge done
     mov $-1, %r10d # gMax, largest max
-    mov $-1, %r11d # mMax
+    mov $-1, %r11d # mMax, middle max
     mov $-1, %r12d # sMax, smallest max
 colLoop:
     cmp %ebx, %r9d # if colIndex >= numCols, set maxes in row and run next row loop

@@ -1,15 +1,7 @@
 .text
 
 checkBits:
-# Test Cases:
-# PASSED | num=1, a=0, b=31 -> 0
-# PASSED | num=1, a=31, b=0 -> 0
-# PASSED | num=7, a=0, b=2 -> 1
-# PASSED | num=7, a=0, b=1 -> 1
-# PASSED | num=-10, a=0, b=31 -> 0
-# PASSED | num=-10, a=31, b=30 -> 1
-#
-# referred to https://flint.cs.yale.edu/cs421/papers/x86-asm/asm.html for shl usage with CL register
+# Referred to https://flint.cs.yale.edu/cs421/papers/x86-asm/asm.html for shl usage with CL register
     push %rbp
     mov %rsp, %rbp
     push %r8

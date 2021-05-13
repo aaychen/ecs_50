@@ -1,16 +1,9 @@
 .text
 
 aaronize:
-# Test Cases:
-# PASSED | arrLen = 3, aaCount = 1
-# PASSED | arrLen = 3, aaCount = 5
-# PASSED | arrLen > 3, aaCount = 1
-# PASSED | arrLen > 3, aaCount = 5
-#
-    # Cannot modify input array
-    # firstItem = firstItem + nextItem
-    # middleItem = prevItem + middleItem + nextItem
-    # lastItem = prevItem + lastItem
+# firstItem = firstItem + nextItem
+# middleItem = prevItem + middleItem + nextItem
+# lastItem = prevItem + lastItem
     push %rbp
     mov %rsp, %rbp
     push %rax
@@ -68,12 +61,12 @@ checkAaronizeCounter:
     mov $0, %r8d # reset index
     mov %edx, %eax # use output array items if aaronizing more than once
     inc %r15d # update aaronize counter
-    cmp %ecx, %r15d # check counter
-    jg regPreservation # jle copy array and aaronize again
     mov $0, %r11
     mov %ebx, %r11d
     imul $8, %r11
-    sub %r11, %rsp # lazy delete copied array elements by moving stack pointer
+    add %r11, %rsp # lazy delete copied array elements by incrementing stack pointer
+    cmp %ecx, %r15d # check counter
+    jg regPreservation # jle copy array and aaronize again
 copyArray: # copy array
     mov %ebx, %r14d # start at end and push onto stack for easy offset calculations
     dec %r14d # arrLen-1

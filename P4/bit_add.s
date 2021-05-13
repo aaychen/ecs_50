@@ -4,14 +4,7 @@
 
 .text
 .globl _start
-_start: # with if/else construct
-# Test Cases:
-# PASSED | numBits = 0
-# PASSED | numBits = 1; 0 + 0
-# PASSED | numBits = 1; 1 + 0; no overflow
-# PASSED | numBits = 1; 1 + 1; overflow
-# PASSED | numBits > 1; both bit strings all 0s
-# PASSED | numBits > 1; both bit strings all 1s
+_start:
     mov $bits1, %r8d # start address of bits1 array
     mov $bits2, %r9d # start address of bits2 array
     mov numBits, %r10d
