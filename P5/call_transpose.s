@@ -13,7 +13,8 @@ output:
     .word -1
     .endr
 
-format_str: .string "output[%d]: %d\n"
+format_str1: .string "input[%d]: %d\n"
+format_str2: .string "output[%d]: %d\n"
 
 .text
 .globl main
@@ -26,15 +27,34 @@ main:
     addi a3, a3, %lo(output)
     jal transpose
 
+    mv s4, a0 # input address
+    mv s5, a1 # numRows
+    mv s6, a2 # numCols
+    mv s7, a3 # output address
+    li s8, 1
+    li s9, 2
+printInput:
+    # Print input matrix items in row major order
+    li s0, 0 # loop variable i
+    mul s1, s5, s6 # numItems = numRows * numCols
+    # Load input format string (starting address) into s3
+    lui s3, %hi(format_str1)
+    addi s3, s3, %lo(format_str1)
+    # input address already loaded in s4
+    j printLoop
+printOutput:
+    beq s8, s9, afterLoop
+    mv s8, s9
     # Print output matrix items in row major order
     li s0, 0 # loop variable i
-    mul s1, a1, a2 # numItems = numRows * numCols
+    mul s1, s5, s6 # numItems = numRows * numCols
     # Load format string (starting address) into s3
-    lui s3, %hi(format_str)
-    addi s3, s3, %lo(format_str)
-    mv s4, a3
+    li s3, 0
+    lui s3, %hi(format_str2)
+    addi s3, s3, %lo(format_str2)
+    mv s4, s7 # output address
 printLoop:
-    bge s0, s1, afterLoop
+    bge s0, s1, printOutput
     # Set up arguments to printf
     mv a0, s3 # a0 = s3 (format string)
     mv a1, s0 # a1 = s0 (loop variable)
