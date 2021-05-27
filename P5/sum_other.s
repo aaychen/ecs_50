@@ -16,15 +16,15 @@ sum_other:
     li t0, 0 # loop variable i
     li t1, 0 # sum
 loop:
-     bge t0, a1, storeSum # if i >= arrlen
-     mv t2, t0 # t2 = i
-     slli t2, t2, 2 # mult by 4
-     mv t3, a0 # start address of array
-     add t2, t2, t3 # address of array item
-     lw t4, 0(t2) # load array item
-     addw t1, t1, t4 # add array item (a2) to sum (t1)
-     addiw t0, t0, 2 # increment i by 2
-     j loop
+    bge t0, a1, storeSum # if i >= arrlen
+    mv t2, t0 # t2 = i
+    slli t2, t2, 2 # mult by 4
+    mv t3, a0 # start address of array
+    add t2, t2, t3 # address of array item
+    lw t4, 0(t2) # load array item
+    addw t1, t1, t4 # add array item (a2) to sum (t1)
+    addiw t0, t0, 2 # increment i by 2
+    j loop
 storeSum:
     mv a0, t1
 registerPreservation:
