@@ -44,5 +44,5 @@ registerPreservation:
     ld t2, 24(sp)
     ld t1, 32(sp)
     ld t0, 40(sp)
-    addi sp, sp, 56 # add to stack pointer to delete
+    addi sp, sp, 48 # add to stack pointer to delete
     jalr x0, 0(x1)
