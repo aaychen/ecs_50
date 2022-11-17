@@ -1,1 +1,1 @@
-# ecs_50 projects
+# ECS 50: Machine-Dependent Programming
